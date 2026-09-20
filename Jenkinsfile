@@ -77,7 +77,6 @@ pipeline {
     }
 
     stage('Deploy Compose') {
-  steps {
       steps {
         withCredentials([
           string(
