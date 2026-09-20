@@ -55,7 +55,9 @@ pipeline {
           )
         ]) {
 
-          bat 'echo %DOCKER_PASSWORD% | docker login --username %DOCKER_USERNAME% --password-stdin'
+          powershell '''
+          $env:DOCKER_PASSWORD | docker login --username $env:DOCKER_USERNAME --password-stdin
+          '''
 
           bat 'docker push "%BACKEND_IMAGE%:%IMAGE_TAG%"'
 
