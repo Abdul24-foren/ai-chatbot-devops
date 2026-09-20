@@ -41,7 +41,7 @@ pipeline {
 
     stage('Build images') {
       steps {
-        bat 'docker compose build backend frontend'
+        bat 'docker-compose build backend frontend'
       }
     }
 
@@ -103,7 +103,7 @@ pipeline {
             echo GEMINI_MODEL=gemini-3.6-flash
           ) > .env.ci
 
-          docker compose --env-file .env.ci up -d --remove-orphans
+          docker-compose --env-file .env.ci up -d --remove-orphans
 
           del /Q .env.ci
           '''
