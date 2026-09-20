@@ -77,10 +77,7 @@ pipeline {
     }
 
     stage('Deploy Compose') {
-      when {
-        branch 'main'
-      }
-
+  steps {
       steps {
         withCredentials([
           string(
