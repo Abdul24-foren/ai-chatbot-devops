@@ -102,8 +102,9 @@ pipeline {
           ) > .env.ci
 
           docker-compose --env-file .env.ci up -d --remove-orphans
-
+          set "COMPOSE_EXIT=%ERRORLEVEL%"
           del /Q .env.ci
+          exit /b %COMPOSE_EXIT%
           '''
         }
       }
