@@ -111,13 +111,8 @@ pipeline {
   }
 
   post {
-    always {
-      bat 'if exist .env.ci del /Q .env.ci'
-
-      junit(
-        testResults: 'backend/coverage/**/*.xml',
-        allowEmptyResults: true
-      )
-    }
+  always {
+    bat 'if exist .env.ci del /Q .env.ci'
   }
+}
 }
