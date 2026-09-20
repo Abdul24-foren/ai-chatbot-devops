@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #f4f4f5;
+  background: #02060d;
+  font-family: Inter, system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+  min-height: 100vh;
+  background: #02060d;
+}
+
+body {
+  min-height: 100vh;
+  color: #f4f4f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button, input, textarea {
+  font: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #272b33;
+  border-radius: 9999px;
+}
+
+.prose h1, .prose h2, .prose h3 {
+  color: white;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose p, .prose li, .prose table {
+  color: #e4e4e7;
+}
+
+.prose a {
+  color: #c4b5fd;
+}
+
+.prose pre {
+  margin: 0;
+}
+
+.prose code {
+  background: transparent;
+  padding: 0;
+}
+
