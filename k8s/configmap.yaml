@@ -4,7 +4,7 @@ metadata:
   name: ai-chatbot-config
   namespace: ai-chatbot
 data:
-  GEMINI_MODEL: gemini-3.6-flash
+  GEMINI_MODEL: gemini-3.5-flash
   CLIENT_URL: http://ai-chatbot-frontend
   POSTGRES_DB: ai_chatbot
   POSTGRES_USER: postgres

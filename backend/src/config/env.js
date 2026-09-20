@@ -11,7 +11,7 @@ export const config = {
 
   // Gemini
   geminiApiKey: process.env.GEMINI_API_KEY,
-  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.6-flash',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.5-flash',
 
   systemPrompt:
     process.env.SYSTEM_PROMPT ||

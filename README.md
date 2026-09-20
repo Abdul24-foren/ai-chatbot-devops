@@ -60,7 +60,7 @@ Root `.env` values used by Compose:
 | `POSTGRES_PASSWORD` | PostgreSQL container password |
 | `JWT_SECRET` | JWT signing secret |
 | `GEMINI_API_KEY` | Google AI Studio key |
-| `GEMINI_MODEL` | Gemini model, normally `gemini-3.6-flash` |
+| `GEMINI_MODEL` | Gemini model, normally gemini-3.5-flash |
 
 Backend local development additionally uses `DATABASE_URL`, `PORT`, `CLIENT_URL`, and `SYSTEM_PROMPT`. See `backend/.env.example` for the complete list.
 
@@ -186,7 +186,7 @@ Prometheus is available at `http://localhost:9090` and Grafana at `http://localh
 
 - Backend restarts with `libssl.so.1.1`: rebuild the Debian Bookworm image after the Dockerfile OpenSSL installation.
 - Backend cannot connect to PostgreSQL: check `docker compose ps`, the PostgreSQL health check, and `DATABASE_URL` host `postgres` inside Compose.
-- Gemini returns 404 for `gemini-2.5-flash`: use a model available to the project, currently `gemini-3.6-flash`.
+- Gemini returns 404 for `gemini-2.5-flash`: use a model available to the project, currently `gemini-3.5-flash`.
 - Frontend cannot call the API: verify the Vite build argument and `VITE_API_URL`; browser clients cannot resolve an internal Kubernetes service name.
 - Docker reports a read-only containerd filesystem: restart Docker Desktop, then rebuild.
 - Never print or commit `GEMINI_API_KEY`, `JWT_SECRET`, database passwords, or generated Kubernetes secrets.

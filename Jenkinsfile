@@ -98,7 +98,7 @@ pipeline {
             echo POSTGRES_PASSWORD=%POSTGRES_PASSWORD%
             echo JWT_SECRET=%JWT_SECRET%
             echo GEMINI_API_KEY=%GEMINI_API_KEY%
-            echo GEMINI_MODEL=gemini-3.6-flash
+            echo GEMINI_MODEL=gemini-3.5-flash
           ) > .env.ci
 
           docker-compose --env-file .env.ci up -d --remove-orphans
