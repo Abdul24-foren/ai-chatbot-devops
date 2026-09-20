@@ -13,6 +13,7 @@ pipeline {
   }
 
   stages {
+
     stage('Checkout') {
       steps {
         checkout scm
@@ -22,9 +23,9 @@ pipeline {
     stage('Backend checks') {
       steps {
         dir('backend') {
-          sh 'npm ci'
-          sh 'npm test -- --passWithNoTests'
-          sh 'npx prisma generate'
+          bat 'npm ci'
+          bat 'npm test -- --passWithNoTests'
+          bat 'npx prisma generate'
         }
       }
     }
@@ -32,29 +33,43 @@ pipeline {
     stage('Frontend checks') {
       steps {
         dir('frontend') {
-          sh 'npm ci'
-          sh 'npm run build'
+          bat 'npm ci'
+          bat 'npm run build'
         }
       }
     }
 
     stage('Build images') {
       steps {
-        sh 'docker compose build backend frontend'
+        bat 'docker compose build backend frontend'
       }
     }
 
     stage('Push images') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          sh 'printf "%s" "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin'
-          sh 'docker push "$BACKEND_IMAGE:$IMAGE_TAG"'
-          sh 'docker tag "$BACKEND_IMAGE:$IMAGE_TAG" "$BACKEND_IMAGE:latest"'
-          sh 'docker push "$BACKEND_IMAGE:latest"'
-          sh 'docker push "$FRONTEND_IMAGE:$IMAGE_TAG"'
-          sh 'docker tag "$FRONTEND_IMAGE:$IMAGE_TAG" "$FRONTEND_IMAGE:latest"'
-          sh 'docker push "$FRONTEND_IMAGE:latest"'
-          sh 'docker logout'
+        withCredentials([
+          usernamePassword(
+            credentialsId: 'dockerhub-credentials',
+            usernameVariable: 'DOCKER_USERNAME',
+            passwordVariable: 'DOCKER_PASSWORD'
+          )
+        ]) {
+
+          bat 'echo %DOCKER_PASSWORD% | docker login --username %DOCKER_USERNAME% --password-stdin'
+
+          bat 'docker push "%BACKEND_IMAGE%:%IMAGE_TAG%"'
+
+          bat 'docker tag "%BACKEND_IMAGE%:%IMAGE_TAG%" "%BACKEND_IMAGE%:latest"'
+
+          bat 'docker push "%BACKEND_IMAGE%:latest"'
+
+          bat 'docker push "%FRONTEND_IMAGE%:%IMAGE_TAG%"'
+
+          bat 'docker tag "%FRONTEND_IMAGE%:%IMAGE_TAG%" "%FRONTEND_IMAGE%:latest"'
+
+          bat 'docker push "%FRONTEND_IMAGE%:latest"'
+
+          bat 'docker logout'
         }
       }
     }
@@ -63,22 +78,34 @@ pipeline {
       when {
         branch 'main'
       }
+
       steps {
         withCredentials([
-          string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
-          string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET'),
-          string(credentialsId: 'postgres-password', variable: 'POSTGRES_PASSWORD')
+          string(
+            credentialsId: 'gemini-api-key',
+            variable: 'GEMINI_API_KEY'
+          ),
+          string(
+            credentialsId: 'jwt-secret',
+            variable: 'JWT_SECRET'
+          ),
+          string(
+            credentialsId: 'postgres-password',
+            variable: 'POSTGRES_PASSWORD'
+          )
         ]) {
-          sh '''
-            umask 077
-            cat > .env.ci <<EOF
-POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-JWT_SECRET=$JWT_SECRET
-GEMINI_API_KEY=$GEMINI_API_KEY
-GEMINI_MODEL=gemini-3.6-flash
-EOF
-            docker compose --env-file .env.ci up -d --remove-orphans
-            rm -f .env.ci
+
+          bat '''
+          (
+            echo POSTGRES_PASSWORD=%POSTGRES_PASSWORD%
+            echo JWT_SECRET=%JWT_SECRET%
+            echo GEMINI_API_KEY=%GEMINI_API_KEY%
+            echo GEMINI_MODEL=gemini-3.6-flash
+          ) > .env.ci
+
+          docker compose --env-file .env.ci up -d --remove-orphans
+
+          del /Q .env.ci
           '''
         }
       }
@@ -87,8 +114,12 @@ EOF
 
   post {
     always {
-      sh 'rm -f .env.ci || true'
-      junit testResults: 'backend/coverage/**/*.xml', allowEmptyResults: true
+      bat 'if exist .env.ci del /Q .env.ci'
+
+      junit(
+        testResults: 'backend/coverage/**/*.xml',
+        allowEmptyResults: true
+      )
     }
   }
 }
