@@ -20,3 +20,13 @@ Thumbs.db
 
 # IDE
 .vscode/
+
+# Infrastructure state and local deployment files
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+terraform.tfvars
+.env.ci
+.env.k8s
+k8s/secrets.yaml

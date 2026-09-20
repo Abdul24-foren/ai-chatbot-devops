@@ -1,0 +1,21 @@
+#!/bin/bash
+set -euo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get install -y ca-certificates curl git
+curl -fsSL https://get.docker.com | sh
+systemctl enable --now docker
+usermod -aG docker ubuntu
+
+mkdir -p /opt/ai-chatbot
+if [ ! -d /opt/ai-chatbot/.git ]; then
+  git clone "${repository_url}" /opt/ai-chatbot
+else
+  git -C /opt/ai-chatbot pull --ff-only
+fi
+
+cat <<'INSTRUCTIONS'
+Deployment checkout is ready at /opt/ai-chatbot.
+Create /opt/ai-chatbot/.env with POSTGRES_PASSWORD, JWT_SECRET, GEMINI_API_KEY, and GEMINI_MODEL before running docker compose up -d.
+INSTRUCTIONS

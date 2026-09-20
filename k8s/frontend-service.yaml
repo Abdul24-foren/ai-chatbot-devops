@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-chatbot-frontend
+  namespace: ai-chatbot
+spec:
+  selector:
+    app: ai-chatbot-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  type: LoadBalancer

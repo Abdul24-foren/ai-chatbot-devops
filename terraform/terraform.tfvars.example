@@ -1,0 +1,6 @@
+aws_region       = "us-east-1"
+project_name     = "ai-chatbot"
+instance_type    = "t3.small"
+ssh_key_name     = "replace-with-existing-ec2-key-pair"
+allowed_ssh_cidr = "203.0.113.10/32"
+repository_url   = "https://github.com/your-user/ai-chatbot-devops.git"
